@@ -13,24 +13,24 @@ import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
-type DescriptionFormProps = {
+import { Comboxbox } from "@/components/ui/combobox";
+type CategoryFormProps = {
     initialData: Course;
     courseId: string;
+    options: { label: string; value: string }[];
 };
 
 const formSchema = z.object({
-    description: z.string().min(1, {
-        message: "Tiêu đề không được để trống",
-    }),
+    categoryId: z.string().min(1),
 });
-const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
+const CategoryForm = ({ initialData, courseId, options }: CategoryFormProps) => {
     const router = useRouter();
     const [isEditing, setIsEditing] = React.useState(false);
     const toggleEdit = () => setIsEditing((current) => !current);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            description: initialData?.description || "",
+            categoryId: initialData?.categoryId || "",
         },
     });
 
@@ -39,17 +39,20 @@ const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             await axios.patch(`/api/courses/${courseId}`, values);
-            toast.success("Cập nhật mô tả thành công");
+            toast.success("Cập nhật danh mục thành công");
             toggleEdit();
             router.refresh();
         } catch (error) {
             toast.error((error as Error).message);
         }
     };
+
+    const selectedOption = options.find((option) => option.value === initialData.categoryId);
+
     return (
         <div className="mt-6 border bg-slate-100 rounded-md p-4">
             <div className="font-medium flex items-center justify-between">
-                Mô tả
+                Danh mục
                 <Button variant="ghost" onClick={toggleEdit}>
                     {isEditing ? (
                         <>Hủy</>
@@ -65,10 +68,10 @@ const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
                 <p
                     className={cn(
                         "text-sm mt-2",
-                        !initialData.description && "text-slate-500 italic"
+                        !initialData.categoryId && "text-slate-500 italic"
                     )}
                 >
-                    {initialData.description || "Không có mô tả"}
+                    {selectedOption?.label || "Không có danh mục nào"}
                 </p>
             )}
             {isEditing && (
@@ -76,15 +79,11 @@ const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-8">
                         <FormField
                             control={form.control}
-                            name="description"
+                            name="categoryId"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                        <Textarea
-                                            disabled={isSubmitting}
-                                            {...field}
-                                            placeholder="Mô tả về khóa học của bạn..."
-                                        />
+                                        <Comboxbox options={...options} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -102,4 +101,4 @@ const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
     );
 };
 
-export default DescriptionForm;
+export default CategoryForm;

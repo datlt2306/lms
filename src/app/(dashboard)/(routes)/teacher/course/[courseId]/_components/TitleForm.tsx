@@ -10,8 +10,9 @@ import { Pencil } from "lucide-react";
 import React from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Course } from "@prisma/client";
 type TitleFormProps = {
-    initialData: { title: string };
+    initialData: Course;
     courseId: string;
 };
 
@@ -26,7 +27,9 @@ const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
     const toggleEdit = () => setIsEditing((current) => !current);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: initialData,
+        defaultValues: {
+            title: initialData?.title || "",
+        },
     });
 
     const { isSubmitting, isValid } = form.formState;
