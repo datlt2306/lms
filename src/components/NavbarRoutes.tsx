@@ -18,9 +18,11 @@ const NavbarRoutes = (props: Props) => {
         <div className="flex gap-x-2 ml-auto">
             {/* <UserButton afterSignOutUrl="/" /> */}
             {teacherPage || isPlayerPage ? (
-                <Button size="sm" variant="secondary">
-                    <LogOut className="h-4 w-4 mr-2" /> Exits
-                </Button>
+                <Link href="/">
+                    <Button size="sm" variant="secondary">
+                        <LogOut className="h-4 w-4 mr-2" /> Exits
+                    </Button>
+                </Link>
             ) : (
                 <Link href="/teacher/course">
                     <Button size="sm" variant="ghost">
