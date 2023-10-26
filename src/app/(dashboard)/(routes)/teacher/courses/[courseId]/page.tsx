@@ -8,13 +8,27 @@ import DescriptionForm from "./_components/DescriptionForm";
 import ImageForm from "./_components/ImageForm";
 import CategoryForm from "./_components/CategoryForm";
 import PriceForm from "./_components/PriceForm";
+import AttachmentForm from "./_components/AttachmentForm";
+import ChaptersForm from "./_components/ChaptersForm";
 type Props = { params: { courseId: string } };
 
 const CourseIdPage = async ({ params }: Props) => {
     const { userId } = auth();
     if (!userId) return redirect("/sign-in");
     const course = await db.course.findUnique({
-        where: { id: params.courseId },
+        where: { id: params.courseId, userId },
+        include: {
+            chapters: {
+                orderBy: {
+                    position: "asc",
+                },
+            },
+            attachments: {
+                orderBy: {
+                    createAt: "desc",
+                },
+            },
+        },
     });
 
     const categories = await db.category.findMany({
@@ -23,8 +37,7 @@ const CourseIdPage = async ({ params }: Props) => {
         },
     });
 
-    console.log(categories);
-    if (!course) return <div>Không tìm thấy khóa học</div>;
+    if (!course) return redirect("/");
 
     const requiredFields = [
         course.title,
@@ -32,6 +45,7 @@ const CourseIdPage = async ({ params }: Props) => {
         course.imageUrl,
         course.price,
         course.categoryId,
+        course.chapters.some((chapter) => chapter.isPublished),
     ];
 
     const totalFields = requiredFields.length;
@@ -69,9 +83,9 @@ const CourseIdPage = async ({ params }: Props) => {
                     <div>
                         <div className="flex items-center gap-x-2">
                             <IconBadge size="default" icon={ListChecks} />
-                            <h2 className="text-xl">Danh sách các phần</h2>
+                            <h2 className="text-xl">Danh sách các chương</h2>
                         </div>
-                        <div className="mt-5">Todo List</div>
+                        <ChaptersForm initialData={course} courseId={course.id} />
                     </div>
                     <div>
                         <div className="flex items-center gap-x-2">
@@ -85,7 +99,7 @@ const CourseIdPage = async ({ params }: Props) => {
                             <IconBadge size="default" icon={File} />
                             <h2 className="text-xl">Tài nguyên & tệp đính kèm</h2>
                         </div>
-                        <ImageForm initialData={course} courseId={course.id} />
+                        <AttachmentForm initialData={course} courseId={course.id} />
                     </div>
                 </div>
             </div>

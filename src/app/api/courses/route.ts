@@ -14,7 +14,7 @@ export const POST = async (req: Request, res: Response) => {
             }
         });
 
-        return new NextResponse(JSON.stringify(course), { status: 200 });
+        return NextResponse.json(course, { status: 201 });
     } catch (error) {
         console.log(error)
         return new NextResponse("Internal Error", { status: 500 })
