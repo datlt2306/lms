@@ -58,7 +58,10 @@ const CourseIdPage = async ({ params }: Props) => {
     return (
         <>
             {!course.isPublished && (
-                <Banner variant="warning" label="Khóa học này vẫn chưa được xuất bản" />
+                <Banner
+                    variant="warning"
+                    label="Khóa học này vẫn chưa được xuất bản. Nó sẽ không hiển thị đối với người học"
+                />
             )}
             <div className="p-6">
                 <div className="flex items-center justify-between">

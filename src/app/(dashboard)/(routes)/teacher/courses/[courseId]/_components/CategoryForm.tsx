@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Comboxbox } from "@/components/ui/combobox";
+import Comboxbox from "@/components/ui/combobox";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";

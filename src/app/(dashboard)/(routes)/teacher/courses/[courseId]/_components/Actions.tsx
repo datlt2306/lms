@@ -43,6 +43,7 @@ const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
             setIsLoading(true);
             await axios.delete(`/api/courses/${courseId}/`);
             toast.success(`Xóa khóa học thành công`);
+            router.refresh();
             router.push(`/teacher/courses/${courseId}`);
         } catch (error) {
             toast.error((error as Error).message);

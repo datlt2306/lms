@@ -23,7 +23,7 @@ type ComboxboxProps = {
     onChange: (value: string) => void;
 };
 
-export const Comboxbox = ({ options, value, onChange }: ComboxboxProps) => {
+const Comboxbox = React.forwardRef(({ options, value, onChange }: ComboxboxProps, ref) => {
     const [open, setOpen] = React.useState(false);
 
     return (
@@ -68,4 +68,8 @@ export const Comboxbox = ({ options, value, onChange }: ComboxboxProps) => {
             </PopoverContent>
         </Popover>
     );
-};
+});
+
+Comboxbox.displayName = "Comboxbox";
+
+export default Comboxbox;

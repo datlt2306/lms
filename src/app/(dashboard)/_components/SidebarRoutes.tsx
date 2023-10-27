@@ -8,7 +8,7 @@ import SidebarItem from "./SidebarItem";
 const guestRoutes = [
     {
         icon: Layout,
-        label: "Dashboard",
+        label: "Thống kê",
         href: "/",
     },
     {
@@ -21,12 +21,12 @@ const guestRoutes = [
 const teacherRoutes = [
     {
         icon: List,
-        label: "Courses",
+        label: "Khóa học",
         href: "/teacher/courses",
     },
     {
         icon: BarChart,
-        label: "Analytics",
+        label: "Phân tích",
         href: "/teacher/analytics",
     },
 ];

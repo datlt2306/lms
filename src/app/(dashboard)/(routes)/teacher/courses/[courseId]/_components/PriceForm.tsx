@@ -61,10 +61,12 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
                 </Button>
             </div>
             {!isEditing && (
-                <p className={cn("text-sm mt-2", !initialData.price && "text-slate-500 italic")}>
-                    {initialData.price ? formatPrice(initialData.price) : "Không có giá"}
-                </p>
+                <p
+                    className={cn("text-sm mt-2", !initialData.price && "text-slate-500 italic")}
+                    dangerouslySetInnerHTML={{ __html: formatPrice(initialData.price || 0) }}
+                />
             )}
+
             {isEditing && (
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-8">
