@@ -20,13 +20,13 @@ const NavbarRoutes = (props: Props) => {
             {teacherPage || isPlayerPage ? (
                 <Link href="/">
                     <Button size="sm" variant="secondary">
-                        <LogOut className="h-4 w-4 mr-2" /> Exits
+                        <LogOut className="h-4 w-4 mr-2" /> Thoát
                     </Button>
                 </Link>
             ) : (
-                <Link href="/teacher/course">
+                <Link href="/teacher/courses">
                     <Button size="sm" variant="ghost">
-                        Teacher mode
+                        Chế độ giảng viên
                     </Button>
                 </Link>
             )}

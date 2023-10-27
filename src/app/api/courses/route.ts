@@ -16,7 +16,7 @@ export const POST = async (req: Request, res: Response) => {
 
         return NextResponse.json(course, { status: 201 });
     } catch (error) {
-        console.log(error)
+        console.log("[POST COURSE]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }

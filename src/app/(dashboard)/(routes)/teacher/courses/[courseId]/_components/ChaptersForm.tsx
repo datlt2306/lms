@@ -114,7 +114,7 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
                 </Form>
             )}
             {!isCreating && (
-                <p
+                <div
                     className={cn(
                         "text-sm mt-2",
                         !initialData.chapters.length && "text-slate-500 italic"
@@ -126,7 +126,7 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
                         onReorder={reOrder}
                         items={initialData.chapters || []}
                     />
-                </p>
+                </div>
             )}
             {!isCreating && (
                 <p className="text-xs text-muted-foreground mt-4">

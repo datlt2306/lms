@@ -79,7 +79,7 @@ const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
                                             step="1000"
                                             disabled={isSubmitting}
                                             {...field}
-                                            placeholder="Thiết lập giá cho khóa học của bạn"
+                                            placeholder="100.000 VND"
                                         />
                                     </FormControl>
                                     <FormMessage />

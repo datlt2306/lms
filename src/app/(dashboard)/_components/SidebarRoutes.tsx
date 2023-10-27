@@ -22,7 +22,7 @@ const teacherRoutes = [
     {
         icon: List,
         label: "Courses",
-        href: "/teacher/course",
+        href: "/teacher/courses",
     },
     {
         icon: BarChart,
