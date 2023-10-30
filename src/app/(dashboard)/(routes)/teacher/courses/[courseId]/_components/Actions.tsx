@@ -1,72 +1,68 @@
-"use client";
+'use client'
 
-import ConfirmModal from "@/components/modals/ConfirmModal";
-import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { Loader2, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { set } from "zod";
-import { useConfettiStore } from "../../../../../../../../hooks/use-confetti-store";
+import ConfirmModal from '@/components/modals/ConfirmModal'
+import { Button } from '@/components/ui/button'
+import axios from 'axios'
+import { Loader2, Trash } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { set } from 'zod'
+import { useConfettiStore } from '../../../../../../../../hooks/use-confetti-store'
 
 type ActionsProps = {
-    disabled: boolean;
-    courseId: string;
-    isPublished: boolean;
-};
+    disabled: boolean
+    courseId: string
+    isPublished: boolean
+}
 
 const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
-    const router = useRouter();
-    const confetti = useConfettiStore();
-    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter()
+    const confetti = useConfettiStore()
+    const [isLoading, setIsLoading] = useState(false)
     const onClick = async () => {
         try {
-            setIsLoading(true);
+            setIsLoading(true)
             if (isPublished) {
-                await axios.patch(`/api/courses/${courseId}/unpublish`);
-                toast.success(`Hủy xuất bản khóa học thành công`);
+                await axios.patch(`/api/courses/${courseId}/unpublish`)
+                toast.success(`Hủy xuất bản khóa học thành công`)
             } else {
-                await axios.patch(`/api/courses/${courseId}/publish`);
-                toast.success(`Xuất bản khóa học thành công`);
-                confetti.onOpen();
+                await axios.patch(`/api/courses/${courseId}/publish`)
+                toast.success(`Xuất bản khóa học thành công`)
+                confetti.onOpen()
             }
-            router.refresh();
+            router.refresh()
         } catch (error) {
-            toast.error((error as Error).message);
+            toast.error((error as Error).message)
         } finally {
-            setIsLoading(false);
+            setIsLoading(false)
         }
-    };
+    }
     const onDelete = async () => {
         try {
-            setIsLoading(true);
-            await axios.delete(`/api/courses/${courseId}/`);
-            toast.success(`Xóa khóa học thành công`);
-            router.refresh();
-            router.push(`/teacher/courses/${courseId}`);
+            setIsLoading(true)
+            await axios.delete(`/api/courses/${courseId}/`)
+            toast.success(`Xóa khóa học thành công`)
+            router.refresh()
+            router.push(`/teacher/courses/${courseId}`)
         } catch (error) {
-            toast.error((error as Error).message);
+            toast.error((error as Error).message)
         } finally {
-            setIsLoading(false);
+            setIsLoading(false)
         }
-    };
+    }
     return (
-        <div className="flex items-center gap-x-2">
-            <Button onClick={onClick} disabled={!disabled || isLoading} variant="outline" size="sm">
-                {isPublished ? "Bỏ xuất bản" : "Xuất bản"}
+        <div className='flex items-center gap-x-2'>
+            <Button onClick={onClick} disabled={!disabled || isLoading} variant='outline' size='sm'>
+                {isPublished ? 'Bỏ xuất bản' : 'Xuất bản'}
             </Button>
             <ConfirmModal onConfirm={onDelete}>
-                <Button size="sm" disabled={isLoading}>
-                    {isLoading ? (
-                        <Loader2 className="animate-spin" />
-                    ) : (
-                        <Trash className="w-4 h-4" />
-                    )}
+                <Button size='sm' disabled={isLoading}>
+                    {isLoading ? <Loader2 className='animate-spin' /> : <Trash className='w-4 h-4' />}
                 </Button>
             </ConfirmModal>
         </div>
-    );
-};
+    )
+}
 
-export default Actions;
+export default Actions

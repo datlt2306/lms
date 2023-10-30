@@ -1,17 +1,14 @@
-import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server"
-import Mux from '@mux/mux-node';
+import { db } from '@/lib/db'
+import { auth } from '@clerk/nextjs'
+import { NextResponse } from 'next/server'
+import Mux from '@mux/mux-node'
 
-const { Video } = new Mux(
-    process.env.MUX_TOKEN_ID!,
-    process.env.MUX_TOKEN_SECRET!
-)
+const { Video } = new Mux(process.env.MUX_TOKEN_ID!, process.env.MUX_TOKEN_SECRET!)
 
 export const DELETE = async (req: Request, { params }: { params: { courseId: string } }) => {
     try {
-        const { userId } = auth();
-        if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+        const { userId } = auth()
+        if (!userId) return new NextResponse('Unauthorized', { status: 401 })
 
         const course = await db.course.findUnique({
             where: {
@@ -27,7 +24,7 @@ export const DELETE = async (req: Request, { params }: { params: { courseId: str
             }
         })
 
-        if (!course) return new NextResponse("Not Found", { status: 404 });
+        if (!course) return new NextResponse('Not Found', { status: 404 })
 
         for (const chapter of course.chapters) {
             if (chapter.muxData?.assetId) {
@@ -37,24 +34,24 @@ export const DELETE = async (req: Request, { params }: { params: { courseId: str
 
         const deleteCourse = await db.course.delete({
             where: {
-                id: params.courseId,
+                id: params.courseId
             }
-        });
+        })
 
         return NextResponse.json(deleteCourse, { status: 200 })
     } catch (error) {
-        console.log("[Delete Course]", error);
-        return new NextResponse("Internal Server Error", { status: 500 })
+        console.log('[Delete Course]', error)
+        return new NextResponse('Internal Server Error', { status: 500 })
     }
 }
 
 export const PATCH = async (req: Request, { params }: { params: { courseId: string } }) => {
     try {
-        const { userId } = auth();
-        const { courseId } = params;
+        const { userId } = auth()
+        const { courseId } = params
 
-        const values = await req.json();
-        if (!userId) return new NextResponse('Unauthorized', { status: 401 });
+        const values = await req.json()
+        if (!userId) return new NextResponse('Unauthorized', { status: 401 })
 
         const course = await db.course.update({
             where: {
@@ -64,11 +61,10 @@ export const PATCH = async (req: Request, { params }: { params: { courseId: stri
             data: {
                 ...values
             }
-        });
+        })
 
         return NextResponse.json(course, { status: 200 })
-
     } catch (error) {
-        return new NextResponse("Internal Error", { status: 500 })
+        return new NextResponse('Internal Error', { status: 500 })
     }
 }

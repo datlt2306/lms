@@ -1,35 +1,33 @@
-import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
-
+import { db } from '@/lib/db'
+import { auth } from '@clerk/nextjs'
+import { NextResponse } from 'next/server'
 
 export const POST = async (req: Request, { params }: { params: { courseId: string } }) => {
     try {
-        const { userId } = auth();
-        const { title } = await req.json();
+        const { userId } = auth()
+        const { title } = await req.json()
 
-
-        if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+        if (!userId) return new NextResponse('Unauthorized', { status: 401 })
 
         const courseOwner = await db.course.findUnique({
             where: {
                 id: params.courseId,
                 userId
-            },
+            }
         })
 
-        if (!courseOwner) return new NextResponse("Unauthorized", { status: 401 });
+        if (!courseOwner) return new NextResponse('Unauthorized', { status: 401 })
 
         const lastChapter = await db.chapter.findFirst({
             where: {
                 courseId: params.courseId
             },
             orderBy: {
-                position: "desc"
+                position: 'desc'
             }
         })
 
-        const newPosition = lastChapter ? lastChapter.position + 1 : 1;
+        const newPosition = lastChapter ? lastChapter.position + 1 : 1
 
         const chapter = await db.chapter.create({
             data: {
@@ -37,11 +35,11 @@ export const POST = async (req: Request, { params }: { params: { courseId: strin
                 courseId: params.courseId,
                 position: newPosition
             }
-        });
+        })
 
-        return NextResponse.json(chapter, { status: 201 });
+        return NextResponse.json(chapter, { status: 201 })
     } catch (error) {
-        console.log("Chapters", error);
-        return new NextResponse("Internal Server Error", { status: 500 })
+        console.log('Chapters', error)
+        return new NextResponse('Internal Server Error', { status: 500 })
     }
 }

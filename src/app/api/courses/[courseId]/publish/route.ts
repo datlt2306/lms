@@ -1,13 +1,13 @@
-import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
-import { Chapter } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { db } from '@/lib/db'
+import { auth } from '@clerk/nextjs'
+import { Chapter } from '@prisma/client'
+import { NextResponse } from 'next/server'
 
 export const PATCH = async (req: Request, { params }: { params: { courseId: string } }) => {
     try {
-        const { userId } = auth();
+        const { userId } = auth()
 
-        if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+        if (!userId) return new NextResponse('Unauthorized', { status: 401 })
 
         const course = await db.course.findUnique({
             where: {
@@ -21,14 +21,14 @@ export const PATCH = async (req: Request, { params }: { params: { courseId: stri
                     }
                 }
             }
-        });
+        })
 
-        if (!course) return new NextResponse("Not Found", { status: 404 });
+        if (!course) return new NextResponse('Not Found', { status: 404 })
 
-        const hasPublishedChapter = course.chapters.some((chapter: Chapter) => chapter.isPublished);
-        console.log("course", course);
+        const hasPublishedChapter = course.chapters.some((chapter: Chapter) => chapter.isPublished)
+        console.log('course', course)
         if (!course.title || !course.description || !course.imageUrl || !course.categoryId || !hasPublishedChapter) {
-            return new NextResponse("Missing required fields", { status: 401 });
+            return new NextResponse('Missing required fields', { status: 401 })
         }
 
         const publishCourse = await db.course.update({
@@ -42,7 +42,7 @@ export const PATCH = async (req: Request, { params }: { params: { courseId: stri
         })
         return NextResponse.json(publishCourse)
     } catch (error) {
-        console.log('Publish course', error);
-        return new NextResponse("Internal Server Error", { status: 500 })
+        console.log('Publish course', error)
+        return new NextResponse('Internal Server Error', { status: 500 })
     }
 }

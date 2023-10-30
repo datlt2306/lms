@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
     AlertDialog,
@@ -9,13 +9,13 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+    AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
 
 type ConfirmModalProps = {
-    children: React.ReactNode;
-    onConfirm: () => void;
-};
+    children: React.ReactNode
+    onConfirm: () => void
+}
 
 const ConfirmModal = ({ children, onConfirm }: ConfirmModalProps) => {
     return (
@@ -32,7 +32,7 @@ const ConfirmModal = ({ children, onConfirm }: ConfirmModalProps) => {
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
-    );
-};
+    )
+}
 
-export default ConfirmModal;
+export default ConfirmModal

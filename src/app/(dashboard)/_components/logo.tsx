@@ -1,13 +1,13 @@
-import Image from "next/image";
+import Image from 'next/image'
 
-type Props = {};
+type Props = {}
 
 const Logo = (props: Props) => {
     return (
         <div>
-            <Image height={130} width={130} alt="logo" src="/logo.svg" />
+            <Image height={130} width={130} alt='logo' src='/logo.svg' />
         </div>
-    );
-};
+    )
+}
 
-export default Logo;
+export default Logo

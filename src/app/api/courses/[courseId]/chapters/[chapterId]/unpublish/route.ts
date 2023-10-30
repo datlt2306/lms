@@ -1,18 +1,18 @@
-import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { db } from '@/lib/db'
+import { auth } from '@clerk/nextjs'
+import { NextResponse } from 'next/server'
 
-export const PATCH = async (req: Request, { params }: { params: { chapterId: string, courseId: string } }) => {
+export const PATCH = async (req: Request, { params }: { params: { chapterId: string; courseId: string } }) => {
     try {
-        const { userId } = auth();
-        if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+        const { userId } = auth()
+        if (!userId) return new NextResponse('Unauthorized', { status: 401 })
         const courseOwner = await db.course.findUnique({
             where: {
                 id: params.courseId,
                 userId
             }
         })
-        if (!courseOwner) return new NextResponse("Unauthorized", { status: 401 });
+        if (!courseOwner) return new NextResponse('Unauthorized', { status: 401 })
         const unPublishChapter = await db.chapter.update({
             where: {
                 id: params.chapterId,
@@ -21,7 +21,7 @@ export const PATCH = async (req: Request, { params }: { params: { chapterId: str
             data: {
                 isPublished: false
             }
-        });
+        })
 
         const publishChaptersInCourse = await db.chapter.findMany({
             where: {
@@ -41,7 +41,7 @@ export const PATCH = async (req: Request, { params }: { params: { chapterId: str
         }
         return NextResponse.json(unPublishChapter)
     } catch (error) {
-        console.log("Publish", error);
-        return new NextResponse("Internal Server Error", { status: 500 })
+        console.log('Publish', error)
+        return new NextResponse('Internal Server Error', { status: 500 })
     }
 }

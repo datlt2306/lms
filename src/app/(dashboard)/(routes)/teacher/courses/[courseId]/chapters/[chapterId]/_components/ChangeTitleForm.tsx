@@ -1,85 +1,85 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Chapter } from "@prisma/client";
-import axios from "axios";
-import { Pencil } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import * as z from "zod";
+'use client'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Chapter } from '@prisma/client'
+import axios from 'axios'
+import { Pencil } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import * as z from 'zod'
 type ChapterTitleFormProps = {
-    initialData: Chapter;
-    courseId: string;
-    chapterId: string;
-};
+    initialData: Chapter
+    courseId: string
+    chapterId: string
+}
 
 const formSchema = z.object({
-    title: z.string().min(1),
-});
+    title: z.string().min(1)
+})
 const ChapterTitleForm = ({ initialData, courseId, chapterId }: ChapterTitleFormProps) => {
-    const router = useRouter();
-    const [isEditing, setIsEditing] = React.useState(false);
-    const toggleEdit = () => setIsEditing((current) => !current);
+    const router = useRouter()
+    const [isEditing, setIsEditing] = React.useState(false)
+    const toggleEdit = () => setIsEditing((current) => !current)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: initialData?.title || "",
-        },
-    });
+            title: initialData?.title || ''
+        }
+    })
 
-    const { isSubmitting, isValid } = form.formState;
+    const { isSubmitting, isValid } = form.formState
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
-            toast.success("Cập nhật bài học thành công");
-            toggleEdit();
-            router.refresh();
+            await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values)
+            toast.success('Cập nhật bài học thành công')
+            toggleEdit()
+            router.refresh()
         } catch (error) {
-            toast.error((error as Error).message);
+            toast.error((error as Error).message)
         }
-    };
+    }
     return (
-        <div className="mt-6 border bg-slate-100 rounded-md p-4">
-            <div className="font-medium flex items-center justify-between">
+        <div className='mt-6 border bg-slate-100 rounded-md p-4'>
+            <div className='font-medium flex items-center justify-between'>
                 Tên chương
-                <Button variant="ghost" onClick={toggleEdit}>
+                <Button variant='ghost' onClick={toggleEdit}>
                     {isEditing ? (
                         <>Hủy</>
                     ) : (
                         <>
-                            <Pencil className="h-4 w-4 mr-2" />
+                            <Pencil className='h-4 w-4 mr-2' />
                             Chỉnh sửa
                         </>
                     )}
                 </Button>
             </div>
-            {!isEditing && <p className="text-sm mt-2">{initialData.title}</p>}
+            {!isEditing && <p className='text-sm mt-2'>{initialData.title}</p>}
             {isEditing && (
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-8">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-y-8'>
                         <FormField
                             control={form.control}
-                            name="title"
+                            name='title'
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
                                         <Input
                                             disabled={isSubmitting}
                                             {...field}
-                                            placeholder="Nhập tiêu đề chương..."
+                                            placeholder='Nhập tiêu đề chương...'
                                         />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <div className="flex items-center gap-x-2">
-                            <Button disabled={!isValid || isSubmitting} type="submit">
+                        <div className='flex items-center gap-x-2'>
+                            <Button disabled={!isValid || isSubmitting} type='submit'>
                                 Lưu
                             </Button>
                         </div>
@@ -87,7 +87,7 @@ const ChapterTitleForm = ({ initialData, courseId, chapterId }: ChapterTitleForm
                 </Form>
             )}
         </div>
-    );
-};
+    )
+}
 
-export default ChapterTitleForm;
+export default ChapterTitleForm
