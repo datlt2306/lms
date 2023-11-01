@@ -40,7 +40,7 @@ export const getCourses = async ({ userId, title, categoryId }: GetCourses): Pro
                 }
             },
             orderBy: {
-                createAt: 'desc'
+                createdAt: 'desc'
             },
         })
 

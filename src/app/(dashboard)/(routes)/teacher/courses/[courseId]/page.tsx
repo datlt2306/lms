@@ -27,7 +27,7 @@ const CourseIdPage = async ({ params }: Props) => {
             },
             attachments: {
                 orderBy: {
-                    createAt: 'desc'
+                    createdAt: 'desc'
                 }
             }
         }

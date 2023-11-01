@@ -49,7 +49,7 @@ model Attachment{
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
 
-  createAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
   @@index([courseId])
 }
@@ -71,7 +71,7 @@ model Chapter{
 
   userProgress UserProgress[]
 
-  createAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
 
   @@index([courseId])
@@ -92,7 +92,7 @@ model UserProgress{
   chaper Chapter @relation(fields: [chaperId], references: [id], onDelete: Cascade)
 
   isComplete Boolean @default(false)
-  createAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
 
   @@index([chaperId])
@@ -106,7 +106,7 @@ model Purchases{
   courseId String
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  createAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
 
   @@unique([userId, courseId])
@@ -118,6 +118,6 @@ model StripeCustomer{
   userId String @unique
 
   stripeCustomerId String @unique
-  createAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
 }
