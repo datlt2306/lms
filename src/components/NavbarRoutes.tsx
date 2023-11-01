@@ -12,7 +12,7 @@ const NavbarRoutes = (props: Props) => {
     const pathName = usePathname()
 
     const teacherPage = pathName?.includes('/teacher')
-    const isPlayerPage = pathName?.includes('/chapter')
+    const isCoursePage = pathName?.includes('/chapter')
     const isSearchPage = pathName === '/search'
 
     return (
@@ -24,7 +24,7 @@ const NavbarRoutes = (props: Props) => {
             )}
             <div className='flex gap-x-2 ml-auto'>
                 {/* <UserButton afterSignOutUrl="/" /> */}
-                {teacherPage || isPlayerPage || isSearchPage ? (
+                {teacherPage || isCoursePage || isSearchPage ? (
                     <Link href='/'>
                         <Button size='sm' variant='secondary'>
                             <LogOut className='h-4 w-4 mr-2' /> Thoát

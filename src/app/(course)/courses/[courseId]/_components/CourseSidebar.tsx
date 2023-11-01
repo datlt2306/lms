@@ -14,7 +14,7 @@ type CouseSidebarProps = {
     progressCount: number
 }
 
-const CouseSidebar = async ({ course, progressCount }: CouseSidebarProps) => {
+const CourseSidebar = async ({ course, progressCount }: CouseSidebarProps) => {
     const { userId } = auth()
     if (!userId) return redirect('/sign-in')
     const purchase = await db.purchases.findUnique({
@@ -43,4 +43,4 @@ const CouseSidebar = async ({ course, progressCount }: CouseSidebarProps) => {
     )
 }
 
-export default CouseSidebar
+export default CourseSidebar
