@@ -8,12 +8,12 @@ import CoursesList from '@/components/CoursesList'
 
 type SearchPageProps = {
     searchParams: {
-        title: string,
+        title: string
         categoryId: string
     }
 }
 
-const SearchPage = async ({ searchParams}: SearchPageProps) => {
+const SearchPage = async ({ searchParams }: SearchPageProps) => {
     const { userId } = auth()
     if (!userId) return redirect('/sign-in')
     const categories = await db.category.findMany({

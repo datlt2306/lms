@@ -1,12 +1,11 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { CheckCircle, Circle, Lock } from 'lucide-react'
+import { CheckCircle, Lock, PlayCircle } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
-import React from 'react'
 
-type CourseSidebarItemProps = {
+import { cn } from '@/lib/utils'
+
+interface CourseSidebarItemProps {
     label: string
     id: string
     isCompleted: boolean
@@ -14,26 +13,27 @@ type CourseSidebarItemProps = {
     isLocked: boolean
 }
 
-const CourseSidebarItem = ({ label, id, isCompleted, courseId, isLocked }: CourseSidebarItemProps) => {
-    const pathName = usePathname()
+export const CourseSidebarItem = ({ label, id, isCompleted, courseId, isLocked }: CourseSidebarItemProps) => {
+    const pathname = usePathname()
     const router = useRouter()
 
-    const Icon = isLocked ? Lock : isCompleted ? CheckCircle : Circle
-    const isActive = pathName === `/courses/${courseId}/${id}`
+    const Icon = isLocked ? Lock : isCompleted ? CheckCircle : PlayCircle
+    const isActive = pathname?.includes(id)
+
     const onClick = () => {
-        router.push(`/courses/${courseId}/chapter/${id}`)
+        router.push(`/courses/${courseId}/chapters/${id}`)
     }
+
     return (
-        <Button
+        <button
             onClick={onClick}
             type='button'
             className={cn(
-                'flex items-center gap-x-2 text-slate-500 text-sm font-[500] transition-all hover:text-slate-500 hover:bg-slate-300/2',
-                isActive && 'text-slate-700 bg-slate-200/2 hover:bg-slate-200/2 hover:text-slate-700',
+                'flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20',
+                isActive && 'text-slate-700 bg-slate-200/20 hover:bg-slate-200/20 hover:text-slate-700',
                 isCompleted && 'text-emerald-700 hover:text-emerald-700',
-                isCompleted && isActive && 'bg-emerald-700'
+                isCompleted && isActive && 'bg-emerald-200/20'
             )}
-            variant='secondary'
         >
             <div className='flex items-center gap-x-2 py-4'>
                 <Icon
@@ -46,11 +46,9 @@ const CourseSidebarItem = ({ label, id, isCompleted, courseId, isLocked }: Cours
                 className={cn(
                     'ml-auto opacity-0 border-2 border-slate-700 h-full transition-all',
                     isActive && 'opacity-100',
-                    isCompleted && 'bg-emerald-200'
+                    isCompleted && 'border-emerald-700'
                 )}
-            ></div>
-        </Button>
+            />
+        </button>
     )
 }
-
-export default CourseSidebarItem
